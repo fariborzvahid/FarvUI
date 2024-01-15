@@ -1,0 +1,49 @@
+﻿@using Exstensions;
+@using System.Text
+@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<FarvUI.Components.DropDown 
+IsMultiSelect=true 
+Title="CustomTitle" 
+Items=@myItem
+/>
+
+
+Checked ones :
+@selected
+<button @onclick="UpdateCheckedList">ClickMe!</button>
+
+
+@code{
+    public List<IFarvDorpDownItem> myItem;
+    public string selected = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        myItem = new List<IFarvDorpDownItem>
+        {
+            new DropdownItem{name="Item1"},
+            new DropdownItem{name="Item2"},
+            new DropdownItem{name="Item3"},
+            new DropdownItem{name="Item4"}
+        };
+
+    }
+
+    protected async Task UpdateCheckedList()
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach (var item in myItem.Where(x => x.IsChecked is true))
+        {
+            sb.AppendLine(item.GetName());
+        }
+        selected = sb.ToString();
+    }
+
+}

@@ -1,18 +1,46 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
+	  <Version>0.0.1</Version>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<Authors>Fariborz Vahid</Authors>
+		<Title>FarvUI</Title>
+		<Description>
+			FarvUI is a set of essential and simple UI components for the Blazor
+		</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<RepositoryURL>https://github.com/fariborzvahid/FarvUI</RepositoryURL>
+		<PackageProjectUrl>https://github.com/fariborzvahid/FarvUI</PackageProjectUrl>
+		<Copyright>GNU LESSER GENERAL PUBLIC LICENSE</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<DebugType>portable</DebugType>
+		<DebugSymbols>true</DebugSymbols>
+	</PropertyGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="resources\**\*" />
+	</ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

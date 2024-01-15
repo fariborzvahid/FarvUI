@@ -1,0 +1,46 @@
+﻿@using FarvUI.Components.DropDownLib
+ <div class="Farv_ddm_Container">
+    <nav>
+        <ul>
+            <li>
+                @Title
+                <!-- First Tier Drop Down -->
+                @if (IsMultiSelect)
+                {
+                    <ul>
+                        @foreach (var item in Items)
+                        {
+                            <li><input type="checkbox" @bind="item.IsChecked"><a href="#">@item.GetName()</a></li>
+                        }
+                    </ul>
+
+                }
+                else
+                {
+                    <ul>
+                        @foreach (var item in Items)
+                        {
+                            <li><a href="#">@item.GetName()</a></li>
+                        }
+                    </ul>
+                }
+                
+                
+            </li>
+        </ul>
+    </nav>
+</div>
+
+@code{
+    [Parameter]
+    public List<IFarvDorpDownItem> Items { get; set; } = [];
+
+    [Parameter]
+    public bool IsMultiSelect { get; set; } = false;
+
+    [Parameter]
+    public string Title { get; set; } = "DropDown Title";
+
+
+
+}
