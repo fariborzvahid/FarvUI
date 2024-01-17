@@ -1,35 +1,69 @@
-﻿@using FarvUI.Components.DropDownLib
- <div class="Farv_ddm_Container">
-    <nav>
-        <ul>
-            <li>
-                @Title
-                <!-- First Tier Drop Down -->
-                @if (IsMultiSelect)
-                {
-                    <ul>
-                        @foreach (var item in Items)
-                        {
-                            <li><input type="checkbox" @bind="item.IsChecked"><a href="#">@item.GetName()</a></li>
-                        }
-                    </ul>
+﻿@using FarvUI.Components.Common
+@using FarvUI.Components.DropDownLib
 
-                }
-                else
-                {
-                    <ul>
-                        @foreach (var item in Items)
-                        {
-                            <li><a href="#">@item.GetName()</a></li>
-                        }
-                    </ul>
-                }
-                
-                
-            </li>
-        </ul>
-    </nav>
+
+
+<div class="@TitleClasses" @onfocusout="HideDropDown">
+    @if (HasInformation)
+    {
+        <label class="label">@Title
+        </label>
+    }
+    <div class="@ControlClasses">
+
+<div class="dropdown @dropdownclasses">
+    
+    <div class="dropdown-trigger">
+        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu2" @onclick="DropDownToggle">
+            <span>Content2</span>
+            <span class="icon is-small">
+                O
+            </span>
+        </button>
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu2" role="menu" @onmouseleave="DropDownToggle">
+        <div class="dropdown-content">
+            @if (IsMultiSelect)
+            {
+                <ul>
+                    @foreach (var item in Items)
+                    {
+                        <div class="dropdown-item">
+                            <input type="checkbox" @bind="item.IsChecked">@item.GetName()
+                        </div>
+                    }
+                </ul>
+
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in Items)
+                    {
+                                <div class="dropdown-item">
+                                    @if (HasHyperRefrence)
+                                    {
+                                        <a href="@item.HyperRefrence" class="dropdown-item">
+                                            @item.GetName()
+                                        </a>
+                                    }
+                                    else
+                                        @item.GetName()
+                        </div>
+                    }
+                </ul>
+            }
+            
+            
+            
+        </div>
+    </div>
 </div>
+    </div>
+    <p class="@DescriptionClasses">@Description</p>
+</div>
+
+    
 
 @code{
     [Parameter]
@@ -39,7 +73,71 @@
     public bool IsMultiSelect { get; set; } = false;
 
     [Parameter]
+    public bool HasInformation { get; set; } = false;
+
+    [Parameter]
+    public bool HasHyperRefrence { get; set; } = false;
+
+    [Parameter]
     public string Title { get; set; } = "DropDown Title";
+
+    [Parameter]
+    public string Description { get; set; } = "DropDown Description";
+
+    [Parameter]
+    public FarvUIDirection Direction { get; set; } = FarvUIDirection.LeftToRight;
+
+    StyleClasses ClassHelper;
+    bool isactive = false;
+    string dropdownclasses;
+
+    string TitleClasses = "";
+    string DescriptionClasses = "";
+    string ControlClasses = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        var classes = new Dictionary<string, string>();
+        if (Direction == FarvUIDirection.RightToLeft)
+            classes.Add("Dir", "rtl is-right");
+
+        classes.Add("Active", "is-active");
+        ClassHelper = new StyleClasses(classes);
+
+        if(HasInformation)
+        {
+            TitleClasses = "field";
+            DescriptionClasses = "help";
+            ControlClasses = "control";
+        }
+        //Detect
+    }
+
+    public void DropDownToggle()
+    {
+        if (isactive)
+        {
+            HideDropDown();
+        }
+        else
+        {
+            ShowDropdown();
+        }
+
+    }
+    
+    public void HideDropDown()
+    {
+        dropdownclasses = ClassHelper.GetStyles(new List<string> { "Dir" });
+        isactive = false;
+    }
+
+    public void ShowDropdown()
+    {
+        dropdownclasses = ClassHelper.GetStyles(new List<string> { "Dir", "Active" });
+        isactive = true;
+    }
 
 
 

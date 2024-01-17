@@ -10,6 +10,7 @@ public interface IFarvDorpDownItem
 {
     string GetName();
     string GetId();
+    string? HyperRefrence {  get; set; }
     bool IsActive { get; set; }
     bool IsVisible { get; set; }
     bool IsChecked { get; set; }
